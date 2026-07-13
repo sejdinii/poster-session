@@ -1,0 +1,6 @@
+step,seconds,n_papers,device,model
+load_model,3.985,5286,cuda,all-MiniLM-L6-v2
+embed_abstracts,7.815,5286,cuda,all-MiniLM-L6-v2
+similarity_matrix,0.112,5286,cuda,all-MiniLM-L6-v2
+save_outputs,0.082,5286,cuda,all-MiniLM-L6-v2
+TOTAL,11.995,5286,cuda,all-MiniLM-L6-v2

@@ -1,0 +1,7 @@
+step,seconds,n_papers,num_clusters
+load_data,0.02,5286,529
+build_linkage,1.992,5286,529
+silhouette_sweep,1.249,5286,529
+dendrogram,0.301,5286,529
+cut_and_save,0.006,5286,529
+TOTAL,3.568,5286,529

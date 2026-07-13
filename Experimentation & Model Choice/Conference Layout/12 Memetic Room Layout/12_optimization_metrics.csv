@@ -1,0 +1,2 @@
+method,time_budget_s,n_seeds,obj_best,obj_mean,obj_std,sim_best,sim_mean,sim_std,best_run_similarity,random_baseline_similarity,pop_size,avg_generations_per_seed,min_papers_per_room,n_papers,n_clusters,n_rooms
+Memetic,60.0,20,8312.0508,8150.3516,110.1993,0.3497,0.3432,0.0028,0.3399,0.304,20,119.5,1,5286,529,12

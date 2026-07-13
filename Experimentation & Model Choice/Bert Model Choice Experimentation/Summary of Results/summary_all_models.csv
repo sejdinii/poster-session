@@ -1,0 +1,4 @@
+model,similarity_metric,n_paraphrases,avg_rank_exp_1,avg_rank_exp_2,avg_rank_exp_3,avg_rank_exp_4,avg_rank_exp_5,overall_avg_rank,rank_1_hits,rank_1_percentage,dataset_embedding_time_s,paraphrase_embedding_time_s,total_embedding_time_s
+all-MiniLM-L6-v2,cosine,250,62.12,112.54,66.5,150.98,91.06,96.64,76,30.4,7.096874237060547,0.0769953727722168,7.173869609832764
+SPECTER2,euclidean,250,137.86,240.48,191.76,260.62,138.34,193.812,48,19.2,1236.233468055725,2.4888947010040283,1238.7223627567291
+aspire,euclidean,250,177.18,242.56,266.06,242.4,177.58,221.156,44,17.599999999999998,1126.43470621109,2.5303561687469482,1128.965062379837

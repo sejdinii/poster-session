@@ -1,0 +1,2 @@
+method,time_budget_s,n_seeds,obj_best,obj_mean,obj_std,sim_best,sim_mean,sim_std,best_run_similarity,random_baseline_similarity,free_size,avg_subsolves_per_seed,min_papers_per_room,n_papers,n_clusters,n_rooms
+Matheuristic (fix-and-optimize),60.0,20,8326.3682,7893.146,302.5687,0.3419,0.3374,0.0031,0.3341,0.304,12,754.0,1,5286,529,12

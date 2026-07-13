@@ -1,0 +1,2 @@
+method,time_budget_s,n_seeds,obj_best,obj_mean,obj_std,sim_best,sim_mean,sim_std,best_run_similarity,random_baseline_similarity,k_max,avg_iterations_per_seed,min_papers_per_room,n_papers,n_clusters,n_rooms
+VNS,60.0,20,8286.0332,7610.4048,329.5743,0.3551,0.3493,0.0032,0.3457,0.304,10,121.3,1,5286,529,12

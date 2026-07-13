@@ -1,0 +1,2 @@
+method,time_budget_s,n_seeds,obj_best,obj_mean,obj_std,sim_best,sim_mean,sim_std,best_run_similarity,random_baseline_similarity,avg_restarts_per_seed,min_papers_per_room,n_papers,n_clusters,n_rooms
+GRASP,60.0,20,8306.1484,8176.3564,76.5571,0.3488,0.3431,0.0029,0.3411,0.304,40.5,1,5286,529,12

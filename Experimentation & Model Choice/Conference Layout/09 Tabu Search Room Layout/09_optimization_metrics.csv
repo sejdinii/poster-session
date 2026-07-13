@@ -1,0 +1,2 @@
+method,time_budget_s,n_seeds,obj_best,obj_mean,obj_std,sim_best,sim_mean,sim_std,best_run_similarity,random_baseline_similarity,avg_trajectories_per_seed,min_papers_per_room,tabu_tenure,n_papers,n_clusters,n_rooms
+Tabu Search,60.0,20,8279.6992,7595.7656,333.3284,0.3536,0.3486,0.003,0.3456,0.304,1.0,1,12,5286,529,12
