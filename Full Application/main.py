@@ -15,7 +15,8 @@
 # optional flags:
 #   --abstract-col   name of the abstract column (default: Abstract)
 #   --id-col         name of the paper id column (default: row numbers 1,2,3...)
-#   --out            output folder (default: layout_output next to the papers file)
+#   --out            output folder (default: a new "Production N" folder next
+#                    to main.py - Production 1, Production 2, ... one per run)
 #
 # this is the only file that knows about files, paths and users. the other four
 # files (embedding, clustering, grasp, quality) never touch a file or a path -
@@ -83,7 +84,7 @@ def main():
     ap.add_argument("--id-col", default=None,
                     help="name of the paper id column (default: row numbers)")
     ap.add_argument("--out", default=None,
-                    help="output folder (default: layout_output next to the papers file)")
+                    help="output folder (default: a new Production N folder next to main.py)")
     args = ap.parse_args()
 
     # interactive fallback: if the program was started without the flags (for
@@ -105,8 +106,16 @@ def main():
         print(f"could not find the papers file: {papers_path}")
         return 1
 
-    # where the results will go. made automatically if its not there
-    out_dir = Path(args.out) if args.out else papers_path.parent / "layout_output"
+    # where the results will go. every run gets its own fresh numbered folder
+    # next to main.py (Production 1, Production 2, ...) so no run ever
+    # overwrites an earlier one. --out still overrides this if given
+    if args.out:
+        out_dir = Path(args.out)
+    else:
+        run_number = 1
+        while (BASE_DIR / f"Production {run_number}").exists():
+            run_number += 1
+        out_dir = BASE_DIR / f"Production {run_number}"
     out_dir.mkdir(exist_ok=True)
 
     # room sizes come in as one string like "700,600,550" - turn it into numbers
@@ -239,6 +248,7 @@ def main():
 
     # a short text report so the user can judge the layout at a glance
     report = (
+        f"source: {papers_path.name}\n"
         f"papers: {n}   rooms: {R}   seats: {int(caps.sum())}\n"
         f"clusters: {len(cluster_ids)} (~{PAPERS_PER_CLUSTER} papers each)\n"
         f"method: grasp, {N_SEEDS} tries x {budget:.0f}s, best kept\n\n"
