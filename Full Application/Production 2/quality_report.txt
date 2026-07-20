@@ -1,0 +1,8 @@
+source: neurips_accepted_submissions.csv
+papers: 5286   rooms: 12   seats: 5286
+clusters: 529 (~10 papers each)
+method: grasp, 5 tries x 53s, best kept
+
+average within-room paper similarity: 0.3395
+random-assignment baseline:           0.3040
+lift over random:                     +0.0355

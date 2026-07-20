@@ -1,0 +1,8 @@
+source: papers_dataset_random_10K.csv
+papers: 10000   rooms: 12   seats: 10800
+clusters: 1000 (~10 papers each)
+method: grasp, 5 tries x 100s, best kept
+
+average within-room paper similarity: 0.1735
+random-assignment baseline:           0.0658
+lift over random:                     +0.1077

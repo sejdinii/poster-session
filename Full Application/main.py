@@ -83,6 +83,10 @@ def main():
                     help="name of the abstract column (default: Abstract)")
     ap.add_argument("--id-col", default=None,
                     help="name of the paper id column (default: row numbers)")
+    ap.add_argument("--category-col", default=None,
+                    help="override: name of the category column for the output labels.\n"
+                         "normally not needed - common names like Primary Area, category,\n"
+                         "track or topic are found automatically")
     ap.add_argument("--out", default=None,
                     help="output folder (default: a new Production N folder next to main.py)")
     args = ap.parse_args()
@@ -132,9 +136,18 @@ def main():
     df = pd.read_csv(papers_path)
 
     if args.abstract_col not in df.columns:
-        print(f"could not find an abstract column called '{args.abstract_col}'. "
-              f"the file has these columns: {list(df.columns)}")
-        return 1
+        # forgiving second try: same name ignoring case, spaces and underscores,
+        # so 'abstract' or 'Abstract Text' are found without any flag
+        def _norm(s):
+            return str(s).lower().replace("_", " ").strip()
+        match = next((col for col in df.columns
+                      if _norm(col) == _norm(args.abstract_col)), None)
+        if match is None:
+            print(f"could not find an abstract column called '{args.abstract_col}'. "
+                  f"the file has these columns: {list(df.columns)}")
+            return 1
+        print(f"using column '{match}' as the abstract column")
+        args.abstract_col = match
 
     # papers without an abstract cant be embedded, so they get dropped with a note
     before = len(df)
@@ -150,6 +163,25 @@ def main():
         print(f"no id column called '{args.id_col}'. "
               f"the file has: {list(df.columns)}")
         return 1
+
+    if args.category_col is not None and args.category_col not in df.columns:
+        print(f"no category column called '{args.category_col}'. "
+              f"the file has: {list(df.columns)}")
+        return 1
+
+    # find the label columns by themselves, so no flags are needed.
+    # matching ignores case, spaces and underscores. these are labels only -
+    # nothing here is ever used for computing
+    def norm(s):
+        return str(s).lower().replace("_", " ").strip()
+    title_col = next((col for col in df.columns if norm(col) == "title"), None)
+    category_col = args.category_col
+    if category_col is None:
+        common = ["primary area", "primary cat", "primary category", "category",
+                  "categories", "track", "topic", "area", "subject"]
+        category_col = next((col for col in df.columns if norm(col) in common), None)
+        if category_col:
+            print(f"using column '{category_col}' as the category label in the outputs")
 
     n = len(df)
     caps = np.array(caps_list)
@@ -234,16 +266,32 @@ def main():
     room_sizes = [int((paper_room_idx == r).sum()) for r in range(R)]
     baseline = random_baseline_similarity(room_sizes, emb, R)
 
-    # the deliverable: one row per paper, which room it goes to
+    # the deliverable: one row per paper, which room it goes to.
+    # a Title column (if the file has one) and the optional category column
+    # ride along as labels so the layout is readable on its own -
+    # they are never used for any computing
     ids = df[args.id_col] if args.id_col else pd.Series(range(1, n + 1), name="paper")
     layout = pd.DataFrame({
         (args.id_col or "paper"): ids.values,
         "room": [room_names[r] for r in paper_room_idx],
     })
+    if title_col and args.id_col != title_col:
+        layout.insert(1, "title", df[title_col].values)
+    if category_col:
+        layout["category"] = df[category_col].values
     layout.to_csv(out_dir / "layout.csv", index=False)
 
     # the per-room table: capacity, papers, fill, how coherent each room is
     summary = room_summary(best, cluster_ids, sizes, caps, room_names, per_room_sim)
+    if category_col:
+        # the three most common categories per room, added here in main so the
+        # evaluation worker stays generic and never learns about user columns
+        cats = df[category_col].astype(str).values
+        top = []
+        for r in range(R):
+            in_room = pd.Series(cats[paper_room_idx == r]).value_counts().head(3)
+            top.append("; ".join(f"{k} ({v})" for k, v in in_room.items()))
+        summary["top_categories"] = top
     summary.to_csv(out_dir / "room_summary.csv", index=False)
 
     # a short text report so the user can judge the layout at a glance

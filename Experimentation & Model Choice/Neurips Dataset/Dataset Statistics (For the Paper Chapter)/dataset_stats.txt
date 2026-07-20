@@ -1,0 +1,30 @@
+file: neurips_accepted_submissions.csv
+papers (rows): 5286
+columns: Number, Title, Abstract, Authors, Primary Area
+
+missing values per column:
+  Number: 0
+  Title: 0
+  Abstract: 0
+  Authors: 0
+  Primary Area: 0
+
+abstract length in words:
+  mean: 181.6
+  min:  37
+  max:  516
+
+papers per primary area:
+  deep_learning: 1685
+  applications: 982
+  theory: 476
+  social_and_economic_aspects_of_machine_learning: 393
+  reinforcement_learning: 350
+  general_machine_learning: 345
+  machine_learning_for_sciences: 325
+  probabilistic_methods: 206
+  optimization: 196
+  neuroscience_and_cognitive_science: 162
+  evaluation: 56
+  other: 56
+  infrastructure: 54

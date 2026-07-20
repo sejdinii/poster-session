@@ -1,0 +1,27 @@
+file: papers_dataset_random_10K.csv
+papers (rows): 10000
+columns: group, primary_cat, title, abstract
+
+missing values per column:
+  group: 0
+  primary_cat: 0
+  title: 0
+  abstract: 0
+
+abstract length in words:
+  mean: 138.4
+  min:  5
+  max:  344
+
+papers per group:
+  Mathematics: 1182
+  Electrical Engineering: 1168
+  Quantitative Biology: 1159
+  Quantitative Finance: 1158
+  Physics: 1146
+  Computer Science: 1127
+  Statistics: 1047
+  Economics: 1012
+  Nonlinear Sciences: 1001
+
+parent set: papers_dataset.csv not found in Dataset\, count skipped
