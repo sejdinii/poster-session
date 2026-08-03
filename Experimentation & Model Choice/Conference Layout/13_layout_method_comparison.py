@@ -12,7 +12,9 @@
 #
 # install once:  pip install scipy
 #
-# outputs: 13_comparison_table.csv, 13_pairwise_wilcoxon.csv
+# outputs land in their own folder next to this script:
+#   13 Heuristics Method Comparison/13_comparison_table.csv
+#   13 Heuristics Method Comparison/13_pairwise_wilcoxon.csv
 
 from pathlib import Path
 import numpy as np
@@ -25,6 +27,10 @@ except ImportError:
     raise SystemExit(1)
 
 BASE_DIR = Path(__file__).resolve().parent          # ...\Poster Session\Conference Layout
+
+# all outputs go into this sub-folder, created automatically if its missing
+OUT_DIR = BASE_DIR / "13 Heuristics Method Comparison"
+OUT_DIR.mkdir(exist_ok=True)
 
 # each method now writes its csvs into its own result sub-folder, so 13 reads
 # each file from inside that folder
@@ -116,7 +122,7 @@ def stats_for(key):
     }
 
 table = pd.DataFrame([stats_for(k) for k in present])
-table.to_csv(BASE_DIR / "13_comparison_table.csv", index=False)
+table.to_csv(OUT_DIR / "13_comparison_table.csv", index=False)
 
 print("\n================== SUMMARY ==================")
 print(table.to_string(index=False))
@@ -142,8 +148,8 @@ if all_tied:
     pd.DataFrame([{"A": METHODS[a][0], "B": METHODS[b][0], "median_obj_diff": 0.0,
                    "p_raw": None, "p_holm": None, "note": "identical on all seeds"}
                   for i, a in enumerate(het) for b in het[i + 1:]]
-                 ).to_csv(BASE_DIR / "13_pairwise_wilcoxon.csv", index=False)
-    print("\nsaved: 13_comparison_table.csv, 13_pairwise_wilcoxon.csv")
+                 ).to_csv(OUT_DIR / "13_pairwise_wilcoxon.csv", index=False)
+    print("\nsaved into: 13 Heuristics Method Comparison")
     raise SystemExit(0)
 
 # Friedman omnibus (>= 3 methods)
@@ -203,7 +209,7 @@ for row in rows:
         row["p_raw"] = round(row["p_raw"], 4)
 
 pair_table = pd.DataFrame(rows)[["A", "B", "median_obj_diff", "p_raw", "p_holm", "note"]]
-pair_table.to_csv(BASE_DIR / "13_pairwise_wilcoxon.csv", index=False)
+pair_table.to_csv(OUT_DIR / "13_pairwise_wilcoxon.csv", index=False)
 
 print("\npairwise Wilcoxon signed-rank (Holm-corrected):")
 print(pair_table.to_string(index=False))
@@ -216,4 +222,4 @@ sig = [r for r in rows if r.get("p_holm") is not None and r["p_holm"] < ALPHA]
 if not sig:
     print("but no pairwise difference is statistically significant after correction:")
     print("the heuristics are effectively tied on this instance - pick on simplicity or speed.")
-print("\nsaved: 13_comparison_table.csv, 13_pairwise_wilcoxon.csv")
+print("\nsaved into: 13 Heuristics Method Comparison")
