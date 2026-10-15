@@ -1,13 +1,20 @@
-# layout_evaluation.py - step 5 of the pipeline: judges how good a layout really is
-#
-# grasp optimizes a score built on cluster centroids, which is a shortcut.
-# this file measures the real thing: how similar are the ACTUAL papers that
-# ended up sharing a room. it also answers "compared to what?" by scoring a
-# random shuffle of the same papers into the same rooms - without that
-# comparison point, a similarity number on its own means nothing.
-#
-# strict rule: this file knows nothing about csvs, users, rooms or paths.
-# main.py hands it layouts and vectors, it hands back numbers and a table.
+#layout_evaluation.py - step 5 of the pipeline: judges how good a layout really is
+
+#grasp optimizes a score built on cluster centroids, which is a shortcut.
+#this file measures the real thing: how similar are the ACTUAL papers that
+#ended up sharing a room. it also answers "compared to what?" by scoring a
+#random shuffle of the same papers into the same rooms - without that
+#comparison point, a similarity number on its own means nothing.
+
+#strict rule: this file knows nothing about csvs, users, rooms or paths.
+#main.py hands it layouts and vectors, it hands back numbers and a table.
+
+#the two measures here, average within-room paper similarity and the
+#random-assignment baseline, are my own evaluation design, no external source
+
+#libraries used in this file and where each one comes from:
+#numpy does the array math, harris et al. 2020, github.com/numpy/numpy
+#pandas builds the room summary table, mckinney 2010, github.com/pandas-dev/pandas
 
 import numpy as np
 import pandas as pd

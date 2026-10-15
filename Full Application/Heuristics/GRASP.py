@@ -1,18 +1,29 @@
-# grasp.py - step 4 of the pipeline: clusters go in, a room layout comes out
-#
-# the job: put whole clusters into rooms so that similar clusters end up
-# together, without ever going over a rooms seat limit. this is the method
-# that won my benchmark against four other heuristics, so its the one the
-# tool uses.
-#
-# how grasp works in one breath: build a decent layout with a bit of
-# randomness, polish it with small moves until it stops improving, write down
-# the score. then throw it away and start fresh. repeat until the time budget
-# runs out, keep the best attempt seen.
-#
-# strict rule: this file knows nothing about csvs, users or paths. it receives
-# cluster sizes, room capacities and the similarity table W, and returns which
-# cluster goes into which room. data in, data out.
+#grasp.py - step 4 of the pipeline: clusters go in, a room layout comes out
+
+#the job: put whole clusters into rooms so that similar clusters end up
+#together, without ever going over a rooms seat limit. this is the method
+#that won my benchmark against four other heuristics, so its the one the
+#tool uses.
+
+#how grasp works in one breath: build a decent layout with a bit of
+#randomness, polish it with small moves until it stops improving, write down
+#the score. then throw it away and start fresh. repeat until the time budget
+#runs out, keep the best attempt seen.
+
+#strict rule: this file knows nothing about csvs, users or paths. it receives
+#cluster sizes, room capacities and the similarity table W, and returns which
+#cluster goes into which room. data in, data out.
+
+#the method, grasp (feo & resende 1995), the book length treatment is
+#resende & ribeiro 2016
+#grasp applied to capacitated clustering, the same problem family as this one,
+#appears in deng & bard 2011 and martinez-gavara et al. 2015
+#the build places big clusters first, the classic decreasing-order idea
+#from bin packing (johnson et al. 1974)
+
+#libraries used in this file and where each one comes from:
+#time and random are python standard library, docs.python.org
+#numpy does the array math, harris et al. 2020, github.com/numpy/numpy
 
 import time
 import random

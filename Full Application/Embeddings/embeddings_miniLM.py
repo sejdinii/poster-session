@@ -1,15 +1,27 @@
-# embedding.py - step 2 of the pipeline: abstracts go in, vectors come out
-#
-# computers cant compare texts, but they can compare numbers. MiniLM turns
-# each abstract into 384 numbers that capture what its about. similar papers
-# get similar numbers. thats what lets us do "how alike are these two papers"
-# as plain math later.
-#
-# strict rule: this file knows nothing about csvs, users, rooms or paths.
-# main.py reads the users file, hands us texts, we hand back vectors. thats it.
+#embedding.py - step 2 of the pipeline: abstracts go in, vectors come out
 
-# numpy = the standard library for big tables of numbers. clustering expects
-# the vectors in exactly this form
+#computers cant compare texts, but they can compare numbers. MiniLM turns
+#each abstract into 384 numbers that capture what its about. similar papers
+#get similar numbers. thats what makes "how alike are these two papers"
+#plain math later.
+
+#strict rule: this file knows nothing about csvs, users, rooms or paths.
+#main.py reads the users file, hands this file the texts, and gets vectors back. thats it.
+
+#the model:
+#all-MiniLM-L6-v2, built with the minilm distillation method of wang et al. 2020
+#model card: huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+#the winner of my model choice experiment, used exactly as delivered, no finetuning
+
+#libraries used in this file and where each one comes from:
+#numpy does the array math, harris et al. 2020, github.com/numpy/numpy
+#torch is pytorch, it talks to the gpu, paszke et al. 2019, github.com/pytorch/pytorch
+#sentence_transformers loads and runs the model,
+#its the official code of reimers & gurevych 2019 (sentence-bert),
+#github.com/UKPLab/sentence-transformers, docs at sbert.net
+
+#numpy = the standard library for big tables of numbers. clustering expects
+#the vectors in exactly this form
 import numpy as np
 
 

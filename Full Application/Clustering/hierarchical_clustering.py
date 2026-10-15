@@ -1,16 +1,25 @@
-# clustering.py - step 3 of the pipeline: vectors go in, clusters come out
-#
-# ward clustering builds a family tree of all papers, bottom up: the two most
-# similar groups merge first, then the next, until everything is one big group.
-# we then cut that tree at a chosen height and get n_clusters small topic boxes.
-#
-# this file also computes what grasp needs to know about the clusters:
-# how many papers each one holds, its centroid (the average direction of its
-# papers), and the cluster-vs-cluster similarity table W. that way grasp only
-# has to decide which cluster goes into which room, nothing else.
-#
-# strict rule: this file knows nothing about csvs, users, rooms or paths.
-# main.py hands it the vectors, it hands back clusters. data in, data out.
+#clustering.py - step 3 of the pipeline: vectors go in, clusters come out
+
+#ward clustering builds a family tree of all papers, bottom up: the two most
+#similar groups merge first, then the next, until everything is one big group.
+#the tree then gets cut at a chosen height and gives n_clusters small topic boxes.
+
+#this file also computes what grasp needs to know about the clusters:
+#how many papers each one holds, its centroid (the average direction of its
+#papers), and the cluster-vs-cluster similarity table W. that way grasp only
+#has to decide which cluster goes into which room, nothing else.
+
+#strict rule: this file knows nothing about csvs, users, rooms or paths.
+#main.py hands it the vectors, it hands back clusters. data in, data out.
+
+#the method, wards hierarchical clustering (ward 1963)
+#the fast tree-building algorithms scipy runs underneath are mullner 2011
+#grasp, the method this file feeds, is feo & resende 1995, cited in full inside GRASP.py
+
+#libraries used in this file and where each one comes from:
+#numpy does the array math, harris et al. 2020, github.com/numpy/numpy
+#scipy builds and cuts the ward tree, virtanen et al. 2020,
+#github.com/scipy/scipy, docs at docs.scipy.org (scipy.cluster.hierarchy)
 
 import numpy as np
 
